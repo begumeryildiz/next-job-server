@@ -23,7 +23,7 @@ const candidateSchema = new Schema({
         match: [/^\S+@\S+\.\S+$/, "Please use a valid email address."],
         trim: true,
         unique: true,
-        lowercase: true,
+        lowercase: true
     },
     phone: {
         type: Number,
@@ -52,9 +52,6 @@ const candidateSchema = new Schema({
         type: String,
         required: true
     }
-    
-
-
 });
 
 module.exports = model('Candidate', candidateSchema);
