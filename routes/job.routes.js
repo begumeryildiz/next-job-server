@@ -75,7 +75,6 @@ router.delete('/jobs/:jobId', (req, res, next) => {
     }
 
     Job.findByIdAndRemove(jobId)
-        .then(deletedJob => res.json(deletedJob))
         .then(() => res.json({ message: `Job with id ${jobId} was removed successfully.` }))
         .catch(error => res.status(500).json(error));
 });

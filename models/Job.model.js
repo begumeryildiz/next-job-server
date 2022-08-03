@@ -28,6 +28,16 @@ const jobSchema = new Schema(
             required: true,
             trim: true
         },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,           
+        },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,           
+        },
     },
     {
         timestamps: true

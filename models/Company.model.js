@@ -31,6 +31,11 @@ const companySchema = new Schema(
             },
             formattedAddress: String,
         },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
     },
     {
         timestamps: true
