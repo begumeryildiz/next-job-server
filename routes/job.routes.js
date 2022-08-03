@@ -28,7 +28,7 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
         owner: req.payload._id
     };
 
-    Job.create({ jobDetails })
+    Job.create( jobDetails )
         .then(response => res.json(response))
         .catch(err => res.json(err));
 });

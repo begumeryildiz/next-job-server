@@ -28,7 +28,7 @@ router.post('/companies', isAuthenticated, (req, res, next) => {
     owner: req.payload._id
    }
 
-    Company.create({ companyDetails })
+    Company.create( companyDetails )
         .then(response => res.json(response))
         .catch(err => res.json(err));
 });
