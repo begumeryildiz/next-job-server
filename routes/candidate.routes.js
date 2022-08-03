@@ -17,7 +17,7 @@ router.get('/candidates', (req, res, next) => {
 
 //CREATE new candidate
 router.post('/candidates', isAuthenticated, (req, res, next) => {
-    const candidateDetails= {
+    const candidateDetails = {
         fistName: req.body.fistName,
         lastName: req.body.lastName,
         role: req.body.role,
@@ -78,7 +78,7 @@ router.delete('/candidates/:candidateId', (req, res, next) => {
 
     Candidate.findByIdAndRemove(candidateId)
         .then(deletedCandidate => res.json(deletedCandidate))
-        .then(() => res.json({ message: `Project with id ${candidateId} was removed successfully.` }))
+        .then(() => res.json({ message: `Candidate with id ${candidateId} was removed successfully.` }))
         .catch(error => res.status(500).json(error));
 });
 
