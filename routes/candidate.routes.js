@@ -30,7 +30,7 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
         linkedin: req.body.linkedin
     }
 
-    Candidate.create({ candidateDetails })
+    Candidate.create( candidateDetails )
         .then(response => res.json(response))
         .catch(err => res.json(err));
 });
