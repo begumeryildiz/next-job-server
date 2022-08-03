@@ -2,7 +2,6 @@ const router = require("express").Router();
 const mongoose = require('mongoose');
 
 const Job = require('../models/Job.model');
-const Company = require('../models/Company.model');
 
 const { isAuthenticated } = require("../middleware/jwt.middleware")
 
