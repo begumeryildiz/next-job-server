@@ -24,7 +24,8 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
         company: req.body.company,
         description: req.body.description,
         skills: req.body.skills,
-        level: req.body.level
+        level: req.body.level,
+        owner: req.payload._id
     };
 
     Job.create({ jobDetails })

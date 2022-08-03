@@ -24,7 +24,8 @@ router.post('/companies', isAuthenticated, (req, res, next) => {
     name: req.body.name,
     job: req.body.job,
     description: req.body.description,
-    address: req.body.address
+    address: req.body.address,
+    owner: req.payload._id
    }
 
     Company.create({ companyDetails })

@@ -17,8 +17,9 @@ router.get('/candidates', (req, res, next) => {
 
 //CREATE new candidate
 router.post('/candidates', isAuthenticated, (req, res, next) => {
+    console.log(req.payload._id)
     const candidateDetails = {
-        fistName: req.body.fistName,
+        firstName: req.body.firstName,
         lastName: req.body.lastName,
         role: req.body.role,
         email: req.body.email,
@@ -27,7 +28,8 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
         about: req.body.about,
         skills: req.body.skills,
         image: req.body.image,
-        linkedin: req.body.linkedin
+        linkedin: req.body.linkedin,
+        owner: req.payload._id
     }
 
     Candidate.create( candidateDetails )
