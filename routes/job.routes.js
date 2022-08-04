@@ -34,7 +34,7 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
         .then(response => {
             console.log(response.company )
             let promise1 = Company.findByIdAndUpdate (jobDetails.company, {$push: {jobs: response._id}}, { new: true })
-            let promise2 = Job.findById(response)
+            let promise2 = Job.findById(response._id)
             return Promise.all([promise1, promise2])
         })
         .then( ([response1, response2]) => res.json(response2))

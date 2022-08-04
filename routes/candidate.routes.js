@@ -2,6 +2,7 @@ const router = require("express").Router();
 const mongoose = require('mongoose');
 
 const Candidate = require('../models/Candidate.model');
+const User = require('../models/User.model');
 
 const { isAuthenticated } = require("../middleware/jwt.middleware")
 
@@ -32,8 +33,13 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
         owner: req.payload._id
     }
 
-    Candidate.create( candidateDetails )
-        .then(response => res.json(response))
+    Candidate.create(candidateDetails)
+        .then(response => {
+            let promise1 = User.findByIdAndUpdate(response.owner, {"candidate": response._id}, { new: true });
+            let promise2 = Candidate.findById(response._id);
+            return Promise.all([promise1, promise2])
+        })
+        .then( ([response1, response2]) => res.json(response2))
         .catch(err => res.json(err));
 });
 
@@ -82,5 +88,33 @@ router.delete('/candidates/:candidateId', (req, res, next) => {
         .then(() => res.json({ message: `Candidate with id ${candidateId} was removed successfully.` }))
         .catch(error => res.status(500).json(error));
 });
+
+//GET Candidate Profil
+router.get('/myprofile', isAuthenticated, (req, res, next) => {
+    const ownerId = req.payload._id
+    User.findById(ownerId)
+        .populate("candidate")
+        .then((user) => {
+            if (typeof(user.candidate) !== "undefined") {
+                res.json(user.candidate);
+            } else {
+                const candidateDetails = {
+                    firstName: "",
+                    lastName: "",
+                    role: "",
+                    email: user.email,
+                    phone: "",
+                    location: "",
+                    about: "",
+                    skills: "",
+                    image: "",
+                    linkedin: "",
+                    owner: ownerId
+                }
+                res.json(candidateDetails);
+            }
+        })
+        .catch(error => res.status(500).json(error));
+})
 
 module.exports = router;

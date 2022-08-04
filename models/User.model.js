@@ -29,6 +29,14 @@ const userSchema = new Schema(
             default: 'user',
             required: true
         },
+        candidate: {
+            type: Schema.Types.ObjectId,
+            ref: 'Candidate'
+        },
+        company: {
+            type: Schema.Types.ObjectId,
+            ref: 'Company'
+        }
     },
     {
         timestamps: true

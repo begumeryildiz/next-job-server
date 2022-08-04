@@ -10,7 +10,7 @@ const companySchema = new Schema(
         },
         jobs: [{
             type: Schema.Types.ObjectId,
-            ref: 'Job',
+            ref: 'Job'
         }],
         description: {
             type: String,
