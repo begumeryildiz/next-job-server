@@ -33,11 +33,6 @@ const jobSchema = new Schema(
             ref: 'User',
             required: true,           
         },
-        owner: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: true,           
-        },
     },
     {
         timestamps: true
