@@ -2,6 +2,8 @@ const router = require("express").Router();
 const mongoose = require('mongoose');
 
 const Job = require('../models/Job.model');
+const Company = require('../models/Company.model');
+
 
 const { isAuthenticated } = require("../middleware/jwt.middleware")
 
@@ -29,7 +31,13 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
     };
 
     Job.create( jobDetails )
-        .then(response => res.json(response))
+        .then(response => {
+            console.log(response.company )
+            let promise1 = Company.findByIdAndUpdate (jobDetails.company, {$push: {jobs: response._id}}, { new: true })
+            let promise2 = Job.findById(response)
+            return Promise.all([promise1, promise2])
+        })
+        .then( ([response1, response2]) => res.json(response2))
         .catch(err => res.json(err));
 });
 

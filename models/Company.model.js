@@ -8,7 +8,7 @@ const companySchema = new Schema(
             required: true,
             trim: true
         },
-        job: [{
+        jobs: [{
             type: Schema.Types.ObjectId,
             ref: 'Job',
         }],

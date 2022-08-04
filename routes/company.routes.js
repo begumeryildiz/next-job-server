@@ -10,7 +10,7 @@ const {isAuthenticated} = require("../middleware/jwt.middleware")
 //READ list of companies 
 router.get('/companies', (req, res, next) => {
     Company.find()
-        .populate("job")
+        .populate("jobs")
         .then(allCompanies => {
             res.json(allCompanies)
         })
@@ -22,7 +22,7 @@ router.get('/companies', (req, res, next) => {
 router.post('/companies', isAuthenticated, (req, res, next) => {
    const companyDetails = {
     name: req.body.name,
-    job: req.body.job,
+    jobs: req.body.jobs,
     description: req.body.description,
     address: req.body.address,
     owner: req.payload._id
@@ -45,7 +45,7 @@ router.get('/companies/:companyId', (req, res, next) => {
     }
 
     Company.findById(companyId)
-        .populate('job')
+        .populate('jobs')
         .then(company => res.status(200).json(company))
         .catch(error => res.json(error));
 });
