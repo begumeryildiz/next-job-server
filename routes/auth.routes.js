@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-const {isAuthenticated} = require("../middleware/jwt.middleware")
+const { isAuthenticated } = require("../middleware/jwt.middleware")
 
 // How many rounds should bcrypt run the salt (default [10 - 12 rounds])
 const saltRounds = 10;
@@ -17,6 +17,22 @@ const User = require("../models/User.model");
 
 router.post("/signup", (req, res) => {
   const { username, email, password, userType } = req.body;
+
+  let userTypeInternal = ""
+  if (!userType) {
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your user type." });
+  } else {
+    if (userType === "candidate") {
+      userTypeInternal = "user"
+    } else if (userType === "company") {
+      userTypeInternal = "company"
+    } else {
+      return res.status(400)
+        .json({ errorMessage: "Please provide your user type correctly." });
+    }
+  }
 
   if (!username) {
     return res
@@ -31,11 +47,11 @@ router.post("/signup", (req, res) => {
   }
 
   //   ! This use case is using a regular expression to control for special characters and min length
-  
+
   const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
 
   if (!regex.test(password)) {
-    return res.status(400).json( {
+    return res.status(400).json({
       errorMessage:
         "Password needs to have at least 8 chars and must contain at least one number, one lowercase and one uppercase letter.",
     });
@@ -56,10 +72,10 @@ router.post("/signup", (req, res) => {
       .then((hashedPassword) => {
         // Create a user and save it in the database
         return User.create({
-          email,
+          email: email,
           name: username,
           password: hashedPassword,
-          userType
+          userType: userTypeInternal
         });
       })
       .then((user) => {
@@ -142,11 +158,11 @@ router.post("/login", (req, res, next) => {
 
 // GET  /auth/verify  -  Used to verify JWT stored on the client
 router.get('/verify', isAuthenticated, (req, res, next) => {
- 
+
   // If JWT token is valid the payload gets decoded by the
   // isAuthenticated middleware and made available on `req.payload`
   console.log(`req.payload`, req.payload);
- 
+
   // Send back the object with user data
   // previously set as the token payload
   res.status(200).json(req.payload);
