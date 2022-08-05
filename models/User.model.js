@@ -25,8 +25,8 @@ const userSchema = new Schema(
         },
         userType: {
             type: String,
-            enum: ['user', 'company', 'admin'],
-            default: 'user',
+            enum: ['candidate', 'company', 'admin'],
+            default: 'candidate',
             required: true
         },
         candidate: {

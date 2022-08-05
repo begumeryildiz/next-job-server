@@ -23,7 +23,7 @@ router.get('/jobs', (req, res, next) => {
 router.post('/jobs', isAuthenticated, (req, res, next) => {
     const jobDetails = {
         title: req.body.title,
-        company: req.body.company,
+        company: req.payload.company,
         description: req.body.description,
         skills: req.body.skills,
         level: req.body.level,
