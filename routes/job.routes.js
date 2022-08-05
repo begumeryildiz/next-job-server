@@ -33,7 +33,7 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
     Job.create( jobDetails )
         .then(response => {
             console.log(response.company )
-            let promise1 = Company.findByIdAndUpdate (jobDetails.company, {$push: {jobs: response._id}}, { new: true })
+            let promise1 = Company.findByIdAndUpdate (jobDetails.company, {$addToSet: {jobs: response._id}}, { new: true })
             let promise2 = Job.findById(response._id)
             return Promise.all([promise1, promise2])
         })
