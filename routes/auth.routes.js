@@ -129,10 +129,10 @@ router.post("/login", (req, res, next) => {
 
         //at this point, we know that credentials are correct (login is successfull)
 
-        const { _id, email, name } = user;
+        const { _id, email, name, userType } = user;
 
         // Create an object that will be set as the token payload
-        const payload = { _id, email, name };
+        const payload = { _id, email, name, userType };
 
         // Create and sign the token
         const authToken = jwt.sign(
@@ -167,6 +167,5 @@ router.get('/verify', isAuthenticated, (req, res, next) => {
   // previously set as the token payload
   res.status(200).json(req.payload);
 });
-
 
 module.exports = router;

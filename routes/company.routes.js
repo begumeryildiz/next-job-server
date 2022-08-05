@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const Company = require('../models/Company.model');
 const Job = require('../models/Job.model');
+const User = require('../models/User.model');
 
 const {isAuthenticated} = require("../middleware/jwt.middleware")
 
@@ -29,7 +30,12 @@ router.post('/companies', isAuthenticated, (req, res, next) => {
    }
 
     Company.create( companyDetails )
-        .then(response => res.json(response))
+    .then(response => {
+        let promise1 = User.findByIdAndUpdate(response.owner, {"company": response._id}, { new: true });
+        let promise2 = Company.findById(response._id);
+        return Promise.all([promise1, promise2])
+    })
+    .then( ([response1, response2]) => res.json(response2))
         .catch(err => res.json(err));
 });
 
@@ -82,5 +88,26 @@ router.delete('/companies/:companyId', (req, res, next) => {
         .then(() => res.json({ message: `Company with id ${companyId} & all associated jobs were removed successfully.` }))
         .catch(error => res.status(500).json(error));
 });
+
+//GET Company Profil
+router.get('/mycompany', isAuthenticated, (req, res, next) => {
+    const ownerId = req.payload._id
+    User.findById(ownerId)
+        .populate("company")
+        .then((user) => {
+            if (typeof(user.company) !== "undefined") {
+                res.json(user.company);
+            } else {
+                const companyDetails = {
+                    name: "",
+                    description: "",
+                    address: "",
+                    owner: ownerId
+                }
+                res.json(companyDetails);
+            }
+        })
+        .catch(error => res.status(500).json(error));
+})
 
 module.exports = router;
