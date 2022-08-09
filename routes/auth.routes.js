@@ -25,7 +25,7 @@ router.post("/signup", (req, res) => {
       .json({ errorMessage: "Please provide your user type." });
   } else {
     if (userType === "candidate") {
-      userTypeInternal = "user"
+      userTypeInternal = "candidate"
     } else if (userType === "company") {
       userTypeInternal = "company"
     } else {
