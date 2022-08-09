@@ -30,14 +30,14 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
         owner: req.payload._id
     };
 
-    Job.create( jobDetails )
+    Job.create(jobDetails)
         .then(response => {
-            console.log(response.company )
-            let promise1 = Company.findByIdAndUpdate (jobDetails.company, {$addToSet: {jobs: response._id}}, { new: true })
+            console.log(response.company)
+            let promise1 = Company.findByIdAndUpdate(jobDetails.company, { $addToSet: { jobs: response._id } }, { new: true })
             let promise2 = Job.findById(response._id)
             return Promise.all([promise1, promise2])
         })
-        .then( ([response1, response2]) => res.json(response2))
+        .then(([response1, response2]) => res.json(response2))
         .catch(err => res.json(err));
 });
 
@@ -68,7 +68,13 @@ router.put('/jobs/:jobId', isAuthenticated, (req, res, next) => {
         return;
     }
 
-    Job.findByIdAndUpdate(jobId, req.body, { new: true })
+    Job.findById(jobId).then((job) => {
+        if (job.owner !== req.payload._id) {
+            throw 'Specified id is not valid !!!!';
+        }
+    })
+
+        .then(() => Job.findByIdAndUpdate(jobId, req.body, { new: true }))
         .then((updatedJob) => res.json(updatedJob))
         .catch(error => res.json(error));
 });
@@ -83,7 +89,13 @@ router.delete('/jobs/:jobId', isAuthenticated, (req, res, next) => {
         return;
     }
 
-    Job.findByIdAndRemove(jobId)
+    Job.findById(jobId).then((job) => {
+        if (job.owner !== req.payload._id) {
+            throw 'Specified id is not valid !!!!';
+        }
+    })
+
+        .then(() => Job.findByIdAndRemove(jobId))
         .then(() => res.json({ message: `Job with id ${jobId} was removed successfully.` }))
         .catch(error => res.status(500).json(error));
 });
