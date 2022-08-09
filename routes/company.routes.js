@@ -41,7 +41,7 @@ router.post('/companies', isAuthenticated, (req, res, next) => {
 
 
 //READ company details
-router.get('/companies/:companyId', (req, res, next) => {
+router.get('/companies/:companyId', isAuthenticated, (req, res, next) => {
     const { companyId } = req.params;
 
     //validate companyId
@@ -58,7 +58,7 @@ router.get('/companies/:companyId', (req, res, next) => {
 
 
 //UPDATE company
-router.put('/companies/:companyId', (req, res, next) => {
+router.put('/companies/:companyId', isAuthenticated, (req, res, next) => {
     const { companyId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(companyId)) {
@@ -73,7 +73,7 @@ router.put('/companies/:companyId', (req, res, next) => {
 
 
 //DELETE company
-router.delete('/companies/:companyId', (req, res, next) => {
+router.delete('/companies/:companyId', isAuthenticated, (req, res, next) => {
     const { companyId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(companyId)) {

@@ -19,7 +19,7 @@ router.get('/candidates', (req, res, next) => {
 });
 
 //CREATE new candidate
-router.post("/upload", fileUploader, (req, res, next) => {
+router.post("/upload", [isAuthenticated, fileUploader], (req, res, next) => {
     // console.log("file is: ", req.file)
    
     if (!req.file) {
@@ -59,7 +59,7 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
 
 
 //READ candidate details
-router.get('/candidates/:candidateId', (req, res, next) => {
+router.get('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
     const { candidateId } = req.params;
 
     //validate candidateId
@@ -75,7 +75,7 @@ router.get('/candidates/:candidateId', (req, res, next) => {
 
 
 //UPDATE candidate
-router.put('/candidates/:candidateId', (req, res, next) => {
+router.put('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
     const { candidateId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(candidateId)) {
@@ -90,7 +90,7 @@ router.put('/candidates/:candidateId', (req, res, next) => {
 
 
 //DELETE candidate
-router.delete('/candidates/:candidateId', (req, res, next) => {
+router.delete('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
     const { candidateId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(candidateId)) {

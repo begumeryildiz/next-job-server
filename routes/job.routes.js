@@ -43,7 +43,7 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
 
 
 //READ job details
-router.get('/jobs/:jobId', (req, res, next) => {
+router.get('/jobs/:jobId', isAuthenticated, (req, res, next) => {
     const { jobId } = req.params;
 
     //validate jobId
@@ -60,7 +60,7 @@ router.get('/jobs/:jobId', (req, res, next) => {
 
 
 //UPDATE job
-router.put('/jobs/:jobId', (req, res, next) => {
+router.put('/jobs/:jobId', isAuthenticated, (req, res, next) => {
     const { jobId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
@@ -75,7 +75,7 @@ router.put('/jobs/:jobId', (req, res, next) => {
 
 
 //DELETE job
-router.delete('/jobs/:jobId', (req, res, next) => {
+router.delete('/jobs/:jobId', isAuthenticated, (req, res, next) => {
     const { jobId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
