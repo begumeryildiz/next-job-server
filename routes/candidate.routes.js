@@ -84,7 +84,7 @@ router.put('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
     }
 
     Candidate.findById(candidateId).then((candidate) => {
-        if (candidate.owner !== req.payload._id) {
+        if (candidate.owner.toString() !== req.payload._id) {
             throw 'Specified id is not valid !!!!';
         }
     })
@@ -104,7 +104,7 @@ router.delete('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
     }
 
     Candidate.findById(candidateId).then((candidate) => {
-        if (candidate.owner !== req.payload._id) {
+        if (candidate.owner.toString() !== req.payload._id) {
             throw 'Specified id is not valid !!!!';
         }
     })

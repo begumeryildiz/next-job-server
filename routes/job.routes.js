@@ -69,7 +69,7 @@ router.put('/jobs/:jobId', isAuthenticated, (req, res, next) => {
     }
 
     Job.findById(jobId).then((job) => {
-        if (job.owner !== req.payload._id) {
+        if (job.owner.toString() !== req.payload._id) {
             throw 'Specified id is not valid !!!!';
         }
     })
@@ -90,7 +90,7 @@ router.delete('/jobs/:jobId', isAuthenticated, (req, res, next) => {
     }
 
     Job.findById(jobId).then((job) => {
-        if (job.owner !== req.payload._id) {
+        if (job.owner.toString() !== req.payload._id) {
             throw 'Specified id is not valid !!!!';
         }
     })

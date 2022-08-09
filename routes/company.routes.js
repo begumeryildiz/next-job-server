@@ -67,7 +67,7 @@ router.put('/companies/:companyId', isAuthenticated, (req, res, next) => {
     }
 
     Company.findById(companyId).then((company) => {
-        if (company.owner !== req.payload._id) {
+        if (company.owner.toString() !== req.payload._id) {
             throw 'Specified id is not valid !!!!';
         }
     })
@@ -88,7 +88,7 @@ router.delete('/companies/:companyId', isAuthenticated, (req, res, next) => {
     }
 
     Company.findById(companyId).then((company) => {
-        if (company.owner !== req.payload._id) {
+        if (company.owner.toString() !== req.payload._id) {
             throw 'Specified id is not valid !!!!';
         }
     })
