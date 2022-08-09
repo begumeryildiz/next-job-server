@@ -108,7 +108,7 @@ router.delete('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
             throw 'Specified id is not valid !!!!';
         }
     })
-    .then(() => Candidate.findByIdAndRemove(candidateId))
+        .then(() => Candidate.findByIdAndRemove(candidateId))
         .then(() => res.json({ message: `Candidate with id ${candidateId} was removed successfully.` }))
         .catch(error => res.status(500).json(error));
 });

@@ -5,7 +5,7 @@ const Company = require('../models/Company.model');
 const Job = require('../models/Job.model');
 const User = require('../models/User.model');
 
-const {isAuthenticated} = require("../middleware/jwt.middleware")
+const { isAuthenticated } = require("../middleware/jwt.middleware")
 
 
 //READ list of companies 
@@ -21,21 +21,21 @@ router.get('/companies', (req, res, next) => {
 
 //CREATE new company
 router.post('/companies', isAuthenticated, (req, res, next) => {
-   const companyDetails = {
-    name: req.body.name,
-    jobs: req.body.jobs,
-    description: req.body.description,
-    address: req.body.address,
-    owner: req.payload._id
-   }
+    const companyDetails = {
+        name: req.body.name,
+        jobs: req.body.jobs,
+        description: req.body.description,
+        address: req.body.address,
+        owner: req.payload._id
+    }
 
-    Company.create( companyDetails )
-    .then(response => {
-        let promise1 = User.findByIdAndUpdate(response.owner, {"company": response._id}, { new: true });
-        let promise2 = Company.findById(response._id);
-        return Promise.all([promise1, promise2])
-    })
-    .then( ([response1, response2]) => res.json(response2))
+    Company.create(companyDetails)
+        .then(response => {
+            let promise1 = User.findByIdAndUpdate(response.owner, { "company": response._id }, { new: true });
+            let promise2 = Company.findById(response._id);
+            return Promise.all([promise1, promise2])
+        })
+        .then(([response1, response2]) => res.json(response2))
         .catch(err => res.json(err));
 });
 
@@ -66,7 +66,13 @@ router.put('/companies/:companyId', isAuthenticated, (req, res, next) => {
         return;
     }
 
-    Company.findByIdAndUpdate(companyId, req.body, { new: true })
+    Company.findById(companyId).then((company) => {
+        if (company.owner !== req.payload._id) {
+            throw 'Specified id is not valid !!!!';
+        }
+    })
+
+        .then(() => Company.findByIdAndUpdate(companyId, req.body, { new: true }))
         .then((updatedCompany) => res.json(updatedCompany))
         .catch(error => res.json(error));
 });
@@ -81,7 +87,13 @@ router.delete('/companies/:companyId', isAuthenticated, (req, res, next) => {
         return;
     }
 
-    Company.findByIdAndRemove(companyId)
+    Company.findById(companyId).then((company) => {
+        if (company.owner !== req.payload._id) {
+            throw 'Specified id is not valid !!!!';
+        }
+    })
+
+        .then(() => Company.findByIdAndRemove(companyId))
         .then(deteletedCompany => {
             return Job.deleteMany({ _id: { $in: deteletedCompany.jobs } });
         })
@@ -95,7 +107,7 @@ router.get('/mycompany', isAuthenticated, (req, res, next) => {
     User.findById(ownerId)
         .populate("company")
         .then((user) => {
-            if (typeof(user.company) !== "undefined") {
+            if (typeof (user.company) !== "undefined") {
                 res.json(user.company);
             } else {
                 const companyDetails = {
