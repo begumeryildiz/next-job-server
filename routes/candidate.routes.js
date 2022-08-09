@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const Candidate = require('../models/Candidate.model');
 const User = require('../models/User.model');
 
-const { isAuthenticated } = require("../middleware/jwt.middleware")
+const { isAuthenticated } = require("../middleware/jwt.middleware");
+
+const fileUploader = require("../config/cloudinary.config");
 
 
 //READ list of candidates
@@ -17,6 +19,18 @@ router.get('/candidates', (req, res, next) => {
 });
 
 //CREATE new candidate
+router.post("/upload", fileUploader, (req, res, next) => {
+    // console.log("file is: ", req.file)
+   
+    if (!req.file) {
+      res.status(400).json({ message: "No file uploaded!" });
+      return;
+    }
+    
+    // Get the URL of the uploaded file and send it as a response.
+    res.json({ fileUrl: req.file.path });
+  });
+
 router.post('/candidates', isAuthenticated, (req, res, next) => {
     console.log(req.payload._id)
     const candidateDetails = {
