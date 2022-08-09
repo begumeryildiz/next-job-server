@@ -21,15 +21,15 @@ router.get('/candidates', (req, res, next) => {
 //CREATE new candidate
 router.post("/upload", [isAuthenticated, fileUploader], (req, res, next) => {
     // console.log("file is: ", req.file)
-   
+
     if (!req.file) {
-      res.status(400).json({ message: "No file uploaded!" });
-      return;
+        res.status(400).json({ message: "No file uploaded!" });
+        return;
     }
-    
+
     // Get the URL of the uploaded file and send it as a response.
     res.json({ fileUrl: req.file.path });
-  });
+});
 
 router.post('/candidates', isAuthenticated, (req, res, next) => {
     console.log(req.payload._id)
@@ -49,11 +49,11 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
 
     Candidate.create(candidateDetails)
         .then(response => {
-            let promise1 = User.findByIdAndUpdate(response.owner, {"candidate": response._id}, { new: true });
+            let promise1 = User.findByIdAndUpdate(response.owner, { "candidate": response._id }, { new: true });
             let promise2 = Candidate.findById(response._id);
             return Promise.all([promise1, promise2])
         })
-        .then( ([response1, response2]) => res.json(response2))
+        .then(([response1, response2]) => res.json(response2))
         .catch(err => res.json(err));
 });
 
@@ -83,7 +83,12 @@ router.put('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
         return;
     }
 
-    Candidate.findByIdAndUpdate(candidateId, req.body, { new: true })
+    Candidate.findById(candidateId).then((candidate) => {
+        if (candidate.owner !== req.payload._id) {
+            throw 'Specified id is not valid !!!!';
+        }
+    })
+        .then(() => Candidate.findByIdAndUpdate(candidateId, req.body, { new: true }))
         .then((updatedCandidate) => res.json(updatedCandidate))
         .catch(error => res.json(error));
 });
@@ -109,7 +114,7 @@ router.get('/myprofile', isAuthenticated, (req, res, next) => {
     User.findById(ownerId)
         .populate("candidate")
         .then((user) => {
-            if (typeof(user.candidate) !== "undefined") {
+            if (typeof (user.candidate) !== "undefined") {
                 res.json(user.candidate);
             } else {
                 const candidateDetails = {
