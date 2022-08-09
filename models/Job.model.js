@@ -33,6 +33,10 @@ const jobSchema = new Schema(
             ref: 'User',
             required: true,           
         },
+        applicants: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Candidate'
+        }]
     },
     {
         timestamps: true
