@@ -28,14 +28,17 @@ router.get('/jobs', (req, res, next) => {
 router.post('/jobs', isAuthenticated, (req, res, next) => {
     const jobDetails = {
         title: req.body.title,
-        company: req.payload.company,
         description: req.body.description,
         skills: req.body.skills,
         level: req.body.level,
         owner: req.payload._id
     };
 
-    Job.create(jobDetails)
+    User.findById(req.payload._id)
+        .then(user => {
+            jobDetails.company = user.company
+            return Job.create(jobDetails)
+        })
         .then(response => {
             console.log(response.company)
             let promise1 = Company.findByIdAndUpdate(jobDetails.company, { $addToSet: { jobs: response._id } }, { new: true })
