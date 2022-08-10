@@ -144,6 +144,21 @@ router.post('/apply/:jobId', isAuthenticated, (req, res, next) => {
         .catch(error => res.json(error));
 });
 
+// SEARCH Job
+router.get('/searchjob', (req, res, next) => {
+    const query = req.query.q;
+    Job.find({$text: {$search: query}})
+        .populate("company")
+        .then(allJobs => {
+            filtered_jobs = allJobs.map(aJob => {
+                aJob.applicants = [];
+                return aJob;
+            });
+            res.json(allJobs)
+        })
+        .catch(err => res.json(err));
+});
+
 
 
 module.exports = router;

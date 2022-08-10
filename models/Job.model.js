@@ -43,4 +43,10 @@ const jobSchema = new Schema(
     }
 );
 
+jobSchema.index({"$**": "text"});
+jobSchema.on('index', error => {
+    // "_id index cannot be sparse"
+    console.log(error.message);
+  });
+console.log(jobSchema.indexes());
 module.exports = model('Job', jobSchema);
