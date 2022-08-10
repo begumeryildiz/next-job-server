@@ -69,8 +69,15 @@ router.get('/candidates/:candidateId', isAuthenticated, (req, res, next) => {
     }
 
     Candidate.findById(candidateId)
-        .then(candidate => res.status(200).json(candidate))
-        .catch(error => res.json(error));
+        .then(candidate => {
+            console.log(candidate);
+            if (!candidate) {
+                throw 'Candidate is not found'
+            }
+            res.status(200).json(candidate)
+        })
+
+        .catch(error => res.status(400).json(error));
 });
 
 
