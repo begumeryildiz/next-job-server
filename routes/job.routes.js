@@ -147,16 +147,30 @@ router.post('/apply/:jobId', isAuthenticated, (req, res, next) => {
 // SEARCH Job
 router.get('/searchjob', (req, res, next) => {
     const query = req.query.q;
-    Job.find({$text: {$search: query}})
-        .populate("company")
-        .then(allJobs => {
-            filtered_jobs = allJobs.map(aJob => {
-                aJob.applicants = [];
-                return aJob;
-            });
-            res.json(allJobs)
-        })
-        .catch(err => res.json(err));
+    if (!query) {
+        Job.find()
+            .populate("company")
+            .then(allJobs => {
+                filtered_jobs = allJobs.map(aJob => {
+                    aJob.applicants = [];
+                    return aJob;
+                });
+                res.json(allJobs)
+            })
+            .catch(err => res.json(err));
+    } else {
+        Job.find({ $text: { $search: query } })
+            .populate("company")
+            .then(allJobs => {
+                filtered_jobs = allJobs.map(aJob => {
+                    aJob.applicants = [];
+                    return aJob;
+                });
+                res.json(allJobs)
+            })
+            .catch(err => res.json(err));
+    }
+
 });
 
 
