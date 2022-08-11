@@ -159,7 +159,9 @@ router.get('/searchjob', (req, res, next) => {
             })
             .catch(err => res.json(err));
     } else {
-        Job.find({ $text: { $search: query } })
+        Job.find({ $text: { $search: query } },
+            { score: { $meta: "textScore" } }
+        ).sort({ score: { $meta: "textScore" } })
             .populate("company")
             .then(allJobs => {
                 filtered_jobs = allJobs.map(aJob => {
