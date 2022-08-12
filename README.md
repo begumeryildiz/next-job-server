@@ -24,6 +24,16 @@ To run in your computer, follow these steps:
   - `CLOUDINARY_KEY="YOUR CLOUDINARY KEY"`
   - `CLOUDINARY_SECRET="YOUR CLOUDINARY SECRET"`
 
+  ## API Endpoints
+
+| HTML Verb | Path              | Request Headers             | Request body                                                           | Description       |
+|-----------|-------------------|-----------------------------|------------------------------------------------------------------------|-------------------|
+| POST      | /api/auth/signup  | –                           | { useranem: String, email: String, password: String, userType:String } | Create an account |
+| POST	     | /api/auth/login	  | –                           | { username: String, password: String                                   |  Login            |
+| GET	      | /api/auth/verify	 | Authorization: Bearer <jwt> |                                                                        | Verify jwt        |
+
+
+
   ## Tecnologies And Tools
 - ExpressJS
 - NodeJS
