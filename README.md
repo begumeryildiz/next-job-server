@@ -24,13 +24,29 @@ To run in your computer, follow these steps:
   - `CLOUDINARY_KEY="YOUR CLOUDINARY KEY"`
   - `CLOUDINARY_SECRET="YOUR CLOUDINARY SECRET"`
 
-  ## API Endpoints
+## API Endpoints
+
+### Auth endpoints
 
 | HTML Verb | Path              | Request Headers             | Request body                                                           | Description       |
 |-----------|-------------------|-----------------------------|------------------------------------------------------------------------|-------------------|
 | POST      | /api/auth/signup  | –                           | { useranem: String, email: String, password: String, userType:String } | Create an account |
 | POST	     | /api/auth/login	  | –                           | { username: String, password: String                                   |  Login            |
 | GET	      | /api/auth/verify	 | Authorization: Bearer <jwt> |                                                                        | Verify jwt        |
+
+
+### Canditates
+
+| HTTP verb | Path                         | Request Headers	            | Request body                                                                                                                                                                            | Description               |
+|-----------|------------------------------|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
+| POST	     | /api/candidates              | Authorization: Bearer <jwt> | { firstName: String,  lastName: String, role: String, email: String,  phone: Number, location: String, about: String,  skills: String, image: String, linkedin: String, owner: String } | Create new candidates     |
+| POST      | /api/upload                  | Authorization: Bearer <jwt> | –	                                                                                                                                                                                      | Upload profile image      |
+| GET       | /api/projects                | –	                          | –	                                                                                                                                                                                      | Get all candidates        |
+| GET       | /api/candidates/:candidateId |                             | –                                                                                                                                                                                       | Get candidate details     |
+| PUT       | /api/candidates/:candidateId | Authorization: Bearer <jwt> | { firstName: String,  lastName: String, role: String, email: String,  phone: Number, location: String, about: String,  skills: String, image: String, linkedin: String, owner: String } | Update a candidate        |
+| GET       | /api/myprofile               | Authorization: Bearer <jwt> | { firstName: String,  lastName: String, role: String, email: String,  phone: Number, location: String, about: String,  skills: String, image: String, linkedin: String, owner: String } | Get the candidate profile |
+| DELETE	   | /api/candidates/:candidateId | Authorization: Bearer <jwt> | –	                                                                                                                                                                                      | Delete a candidate        |
+
 
 
 
