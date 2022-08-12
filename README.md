@@ -48,6 +48,7 @@ To run in your computer, follow these steps:
 | DELETE	   | /api/candidates/:candidateId | Authorization: Bearer <jwt> | –	                                                                                                                                                                                      | Delete a candidate        |
 
 ### Companies
+
 | HTTP verb | Path                      | Request Headers	            | Request body                                                                        | Description             |
 |-----------|---------------------------|-----------------------------|-------------------------------------------------------------------------------------|-------------------------|
 | POST	     | /api/companies            | Authorization: Bearer <jwt> | { name: String,  jobs: Array, description: String, address: String, owner: String } | Create new company      |
@@ -57,8 +58,16 @@ To run in your computer, follow these steps:
 | GET       | /api/mycompnay            | Authorization: Bearer <jwt> | { name: String,  jobs: Array, description: String, address: String, owner: String } | Get the company profile |
 | DELETE	   | /api/companies/:companyId | Authorization: Bearer <jwt> | –	                                                                                  | Delete a company        |
 
+### Jobs
 
-
+| HTTP verb | Path             | Request Headers	            | Request body                                                                                                              | Description     |
+|-----------|------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------------------|-----------------|
+| POST	     | /api/jobs        | Authorization: Bearer <jwt> | { title: String,  company: String, description: String, skills: String, level: String, owner: String, applicants: Array } | Create new job  |
+| GET       | /api/jobs        | –	                          | –	                                                                                                                        | Get all jobs    |
+| GET       | /api/jobs/:jobId | Authorization: Bearer <jwt> | –                                                                                                                         | Get job details |
+| PUT       | /api/jobs/:jobId | Authorization: Bearer <jwt> | { title: String,  company: String, description: String, skills: String, level: String, owner: String, applicants: Array } | Update a job    |
+| DELETE	   | /api/jobs/:jobId | Authorization: Bearer <jwt> | –	                                                                                                                        | Delete a job    |
+| GET       | /api/seacrhjob   | –	                          | –	                                                                                                                        | Search jobs     |
 
 
   ## Tecnologies And Tools
