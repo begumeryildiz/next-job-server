@@ -42,10 +42,21 @@ To run in your computer, follow these steps:
 | POST	     | /api/candidates              | Authorization: Bearer <jwt> | { firstName: String,  lastName: String, role: String, email: String,  phone: Number, location: String, about: String,  skills: String, image: String, linkedin: String, owner: String } | Create new candidates     |
 | POST      | /api/upload                  | Authorization: Bearer <jwt> | –	                                                                                                                                                                                      | Upload profile image      |
 | GET       | /api/projects                | –	                          | –	                                                                                                                                                                                      | Get all candidates        |
-| GET       | /api/candidates/:candidateId |                             | –                                                                                                                                                                                       | Get candidate details     |
+| GET       | /api/candidates/:candidateId | Authorization: Bearer <jwt>          | –                                                                                                                                                                                       | Get candidate details     |
 | PUT       | /api/candidates/:candidateId | Authorization: Bearer <jwt> | { firstName: String,  lastName: String, role: String, email: String,  phone: Number, location: String, about: String,  skills: String, image: String, linkedin: String, owner: String } | Update a candidate        |
 | GET       | /api/myprofile               | Authorization: Bearer <jwt> | { firstName: String,  lastName: String, role: String, email: String,  phone: Number, location: String, about: String,  skills: String, image: String, linkedin: String, owner: String } | Get the candidate profile |
 | DELETE	   | /api/candidates/:candidateId | Authorization: Bearer <jwt> | –	                                                                                                                                                                                      | Delete a candidate        |
+
+### Companies
+| HTTP verb | Path                      | Request Headers	            | Request body                                                                        | Description             |
+|-----------|---------------------------|-----------------------------|-------------------------------------------------------------------------------------|-------------------------|
+| POST	     | /api/companies            | Authorization: Bearer <jwt> | { name: String,  jobs: Array, description: String, address: String, owner: String } | Create new company      |
+| GET       | /api/companies            | –	                          | –	                                                                                  | Get all companies       |
+| GET       | /api/companies/:companyId | Authorization: Bearer <jwt> | –                                                                                   | Get company details     |
+| PUT       | /api/companies/:companyId | Authorization: Bearer <jwt> | { name: String,  jobs: Array, description: String, address: String, owner: String } | Update a company        |
+| GET       | /api/mycompnay            | Authorization: Bearer <jwt> | { name: String,  jobs: Array, description: String, address: String, owner: String } | Get the company profile |
+| DELETE	   | /api/companies/:companyId | Authorization: Bearer <jwt> | –	                                                                                  | Delete a company        |
+
 
 
 
